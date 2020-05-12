@@ -1,22 +1,33 @@
 import React from "react";
-import { StyleSheet, Text, View, ScrollView, SafeAreaView } from "react-native";
+import { ScrollView, SafeAreaView } from "react-native";
 import Header from "./components/Header";
 import News from "./components/News";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+
+const initialState = {
+  news: [],
+};
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "FETCH_NEWS":
+      return { news: action.payload };
+  }
+  return state;
+};
+
+const store = createStore(reducer);
 
 export default function App() {
   return (
-    <ScrollView style={styles.container} scrollEnabled={true}>
-      <Header />
-      <View>
-        <News />
-      </View>
-    </ScrollView>
+    <Provider store={store}>
+      <SafeAreaView>
+        <ScrollView scrollEnabled={true}>
+          <Header />
+          <News />
+        </ScrollView>
+      </SafeAreaView>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    backgroundColor: "white",
-  },
-});

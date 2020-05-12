@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import axios from "axios";
+
 import {
   StyleSheet,
   Text,
@@ -6,7 +9,6 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import axios from "axios";
 
 const categoryList = [
   "world",
@@ -26,27 +28,23 @@ const touchableStyle = {
   borderRadius: 5,
 };
 
-const Categories = () => {
-  const [currentCat, setCurrentCat] = useState("");
+const Categories = (props) => {
+  const [currentCategory, setCurrentCategory] = useState("");
 
   useEffect(() => {
-    setCurrentCat(categoryList[0]);
+    console.log(currentCategory);
     fetchNews(categoryList[0]);
   }, []);
 
   const fetchNews = (category) => {
+    setCurrentCategory(category);
     axios
       .get(
-        `https://gnews.io/api/v3/topics/${category}?token=5d7c093a0721ea0db18d547cf315ed7b`
+        `https://gnews.io/api/v3/topics/${category}?token=6e3a4c5d7a486d87f90333e664506923`
       )
       .then((response) => {
-        console.log(response.data);
+        props.handleCategory(response.data.articles);
       });
-  };
-
-  const handleCategory = (category) => {
-    setCurrentCat(category);
-    fetchNews(category);
   };
 
   return (
@@ -57,18 +55,18 @@ const Categories = () => {
             <TouchableOpacity
               key={category}
               style={
-                currentCat === category
+                currentCategory === category
                   ? styles.activeCategory
                   : styles.inactiveCategory
               }
               onPress={(e) => {
                 e.preventDefault();
-                handleCategory(category);
+                fetchNews(category);
               }}
             >
               <Text
                 style={
-                  currentCat === category
+                  currentCategory === category
                     ? styles.activeCategoryText
                     : styles.inactiveCategoryText
                 }
@@ -82,7 +80,15 @@ const Categories = () => {
     </View>
   );
 };
-export default Categories;
+
+function mapDispatchToProps(dispatch) {
+  return {
+    handleCategory: (category) =>
+      dispatch({ type: "FETCH_NEWS", payload: category }),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Categories);
 
 const styles = StyleSheet.create({
   categoryList: {

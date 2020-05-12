@@ -1,9 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import moment from "moment";
 import Categories from "../components/Categories";
 
-export default function Header() {
+const Header = () => {
   return (
     <View style={styles.headerStyle}>
       <View style={styles.column}>
@@ -13,22 +13,18 @@ export default function Header() {
             {moment().format("dddd DD, MMMM").toUpperCase()}
           </Text>
         </View>
-        <View>
-          <Image
-            source={require("../assets/search.png")}
-            style={{ width: 20, height: 20 }}
-          />
-        </View>
       </View>
       <Categories />
     </View>
   );
-}
+};
+
+export default Header;
 
 const styles = StyleSheet.create({
   headerStyle: {
     backgroundColor: "#DA1057",
-    paddingTop: 80,
+    paddingTop: 50,
     paddingBottom: 10,
     paddingHorizontal: 15,
   },
