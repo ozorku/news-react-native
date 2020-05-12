@@ -39,9 +39,7 @@ const Categories = (props) => {
   const fetchNews = (category) => {
     setCurrentCategory(category);
     axios
-      .get(
-        `https://gnews.io/api/v3/topics/${category}?token=6e3a4c5d7a486d87f90333e664506923`
-      )
+      .get(`https://gnews.io/api/v3/topics/${category}?token=<TOKEN HERE>`)
       .then((response) => {
         props.handleCategory(response.data.articles);
       });
