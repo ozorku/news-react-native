@@ -1,13 +1,24 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import { connect } from "react-redux";
 
 const NewsCard = (props) => {
   return (
     <View style={styles.newsCard}>
-      <Text style={styles.title}>{props.item.title}</Text>
-
-      <Text style={styles.source}>{props.item.source.name}</Text>
+      <TouchableOpacity
+        onPress={() => {
+          Linking.openURL(props.item.source.url);
+        }}
+      >
+        <Text style={styles.title}>{props.item.title}</Text>
+        <Text style={styles.source}>{props.item.source.name}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
